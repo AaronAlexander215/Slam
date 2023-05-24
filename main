@@ -1,0 +1,235 @@
+import random
+from tkinter import *
+
+GAME_WIDTH = 1400
+GAME_HEIGHT = 700
+BACKROUND_COLOUR = "#000000"
+CARD_COLOUR = "#FF0000"
+
+class Card(object):
+    def __init__(self, suit, val):
+        self.suit = suit
+        self.value = val
+
+    def show(self):
+        print("{} of {}".format(self.value, self.suit))
+
+
+class Deck(object):
+    def __init__(self):
+        self.cards =[]
+        self.build()
+
+    def build(self):
+        for s in ["Spades", "Clubs", "Diamonds", "Hearts"]:
+            for v in range(1, 14):
+                self.cards.append(Card(s,v))
+
+    def show(self):
+        for c in self.cards:
+            c.show()
+
+    def shuffle(self):
+        for i in range(len(self.cards)-1, 0, -1):
+            r = random.randint(0, i)
+            self.cards[i], self.cards[r] = self.cards[r], self.cards[i]
+
+    def drawCard(self):
+        return self.cards.pop()
+
+class Player(object):
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+
+    def draw(self, deck):
+        self.hand.append(deck.drawCard())
+        return self
+
+    def showHand(self):
+        for card in self.hand:
+            card.show()
+
+    def discard(self):
+        return self.hand.pop()
+    
+    def makeTableaus(self):
+        self.t1 =[]
+        self.t1.append(self.hand.pop())
+        if len(self.hand) > 1:
+            self.t2 =[]
+            self.t2.append(self.hand.pop())
+            self.t2.append(self.hand.pop())
+        elif len(self.hand) == 1:
+            self.t2 =[]
+            self.t2.append(self.hand.pop())
+        else:
+            self.t2 =[]           
+        
+        if len(self.hand) > 2: 
+            self.t3 =[]
+            self.t3.append(self.hand.pop())
+            self.t3.append(self.hand.pop())
+            self.t3.append(self.hand.pop())
+        elif len(self.hand) == 2:
+            self.t3 =[]
+            self.t3.append(self.hand.pop())
+            self.t3.append(self.hand.pop())       
+        elif len(self.hand) == 1:
+            self.t3 =[]
+            self.t3.append(self.hand.pop())
+        else:
+            self.t3 =[]
+        
+        if len(self.hand) > 3: 
+            self.t4 =[]
+            self.t4.append(self.hand.pop())
+            self.t4.append(self.hand.pop())
+            self.t4.append(self.hand.pop())
+            self.t4.append(self.hand.pop())
+        elif len(self.hand) == 3:
+            self.t4 =[]
+            self.t4.append(self.hand.pop())
+            self.t4.append(self.hand.pop())
+            self.t4.append(self.hand.pop())
+        elif len(self.hand) == 2:
+            self.t4 =[]
+            self.t4.append(self.hand.pop())
+            self.t4.append(self.hand.pop())     
+        elif len(self.hand) == 1:
+            self.t4 =[]
+            self.t4.append(self.hand.pop())
+        else:
+            self.t4= []
+    
+        if len(self.hand) > 4:
+            self.t5 =[]
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+        elif len(self.hand) == 4:
+            self.t5 =[]
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+        elif len(self.hand) == 3:
+            self.t5 =[]
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+        elif len(self.hand) == 2:
+            self.t5 =[]
+            self.t5.append(self.hand.pop())
+            self.t5.append(self.hand.pop())
+        elif len(self.hand) == 1:
+            self.t5 =[]
+            self.t5.append(self.hand.pop())
+        else:
+            self.t5 = []
+
+
+        self.leftovers = self.hand
+        self.play = []
+
+
+    def displayPlayersCards(self):
+
+
+        if self.t1  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*2+20,GAME_HEIGHT,(GAME_WIDTH/9)*3-20,(GAME_HEIGHT/5)*4,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*2.5,(GAME_HEIGHT/5)*4.5,font = ('consolas', 70), text = self.t1[0].value, fill="blue")
+        if self.t2  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*3+20,GAME_HEIGHT,(GAME_WIDTH/9)*4-20,(GAME_HEIGHT/5)*4,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*3.5,(GAME_HEIGHT/5)*4.5,font = ('consolas', 70), text = self.t2[0].value, fill="blue")
+        if self.t3  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*4+20,GAME_HEIGHT,(GAME_WIDTH/9)*5-20,(GAME_HEIGHT/5)*4,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*4.5,(GAME_HEIGHT/5)*4.5,font = ('consolas', 70), text = self.t3[0].value, fill="blue")
+        if self.t4  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*5+20,GAME_HEIGHT,(GAME_WIDTH/9)*6-20,(GAME_HEIGHT/5)*4,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*5.5,(GAME_HEIGHT/5)*4.5,font = ('consolas', 70), text = self.t4[0].value, fill="blue")
+        if self.t5  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*6+20,GAME_HEIGHT,(GAME_WIDTH/9)*7-20,(GAME_HEIGHT/5)*4,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*6.5,(GAME_HEIGHT/5)*4.5,font = ('consolas', 70), text = self.t5[0].value, fill="blue")
+        if self.leftovers != []: 
+            canvas.create_rectangle((GAME_WIDTH/9)*6+20,(GAME_HEIGHT/5)*2,(GAME_WIDTH/9)*7-20,(GAME_HEIGHT/5)*3,fill = CARD_COLOUR)
+            #canvas.create_text((GAME_WIDTH/9)*6.5,(GAME_HEIGHT/5)*2.5,font=('consolas', 70), text = self.leftovers[0].value, fill="blue")
+        if self.play != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*5+20,(GAME_HEIGHT/5)*2,(GAME_WIDTH/9)*6-20,(GAME_HEIGHT/5)*3,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*5.5,(GAME_HEIGHT/5)*2.5,font=('consolas', 70), text = self.play[0].value, fill="blue")
+    
+    def displayComputersCards(self):
+        if self.t5 != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*2+20,0,(GAME_WIDTH/9)*3-20,GAME_HEIGHT/5,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*2.5,(GAME_HEIGHT/5)*0.5,font = ('consolas', 70), text = self.t5[0].value, fill="blue")
+        if self.t4  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*3+20,0,(GAME_WIDTH/9)*4-20,GAME_HEIGHT/5,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*3.5,(GAME_HEIGHT/5)*0.5,font = ('consolas', 70), text = self.t4[0].value, fill="blue")
+        if self.t3  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*4+20,0,(GAME_WIDTH/9)*5-20,GAME_HEIGHT/5,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*4.5,(GAME_HEIGHT/5)*0.5,font = ('consolas', 70), text = self.t3[0].value, fill="blue")
+        if self.t2  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*5+20,0,(GAME_WIDTH/9)*6-20,GAME_HEIGHT/5,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*5.5,(GAME_HEIGHT/5)*0.5,font = ('consolas', 70), text = self.t2[0].value, fill="blue")
+        if self.t1  != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*6+20,0,(GAME_WIDTH/9)*7-20,GAME_HEIGHT/5,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*6.5,(GAME_HEIGHT/5)*0.5,font = ('consolas', 70), text = self.t1[0].value, fill="blue")
+        if self.leftovers != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*2+20,(GAME_HEIGHT/5)*2,(GAME_WIDTH/9)*3-20,(GAME_HEIGHT/5)*3,fill = CARD_COLOUR)
+            #canvas.create_text((GAME_WIDTH/9)*2.5,(GAME_HEIGHT/5)*2.5,font = ('consolas', 70), text = self.leftovers[0].value, fill="blue")
+        if self.play != []:
+            canvas.create_rectangle((GAME_WIDTH/9)*3+20,(GAME_HEIGHT/5)*2,(GAME_WIDTH/9)*4-20,(GAME_HEIGHT/5)*3,fill = CARD_COLOUR)
+            canvas.create_text((GAME_WIDTH/9)*3.5,(GAME_HEIGHT/5)*2.5,font = ('consolas', 70), text = self.play[0].value, fill="blue")
+
+#Input player name
+playerName = input("\nWhat is your name?:")
+
+#Create deck and players
+deck = Deck()
+player = Player(playerName)
+computer = Player("computer")
+
+#Shuffle and split deck
+deck.shuffle()
+for c in range(0,26):
+    player.draw(deck)
+    computer.draw(deck)
+
+window = Tk()
+window.title("Slam")
+window.resizable(False,False)
+canvas = Canvas(window, bg=BACKROUND_COLOUR, height = GAME_HEIGHT, width = GAME_WIDTH)
+canvas.pack()
+window.update()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+
+x = int((screen_width/2)-(window_width/2))
+y= int((screen_height/2)-(window_height/2))
+
+window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+won = False
+
+while won == False:
+
+    player.makeTableaus()
+    player.displayPlayersCards()
+
+    computer.makeTableaus()
+    computer.displayComputersCards()
+
+    
+    
+    
+    
+    
+    
+    
+    won = True
+     
+
+window.mainloop()
